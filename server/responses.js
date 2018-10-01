@@ -61,24 +61,55 @@ const getUsers = (request, response) => {
 const addUser = (request, response, body) => {
   // default json message
   const responseJSON = {
-    message: 'Name and age are both required.',
+    message: 'Name, Head armor, Chest armor, Gloves, Waist armor, Leg armor, Weapon, and Charm are all required.',
   };
 
-  // check to make sure we have both fields
-  if (!body.name || !body.age) {
+  // check to make sure we have all the fields
+  if (!body.name || !body.head || || !body.chest || !body.arms || !body.waist || !body.legs || !body.weapon || !body.charm) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
 
   // default status code
   let responseCode = 201;
+    
+  //rest the error message
+  responseJSON.message = "";
 
   // if that user's name already exists in our object return an updated
   if (users[body.name]) {
-    responseCode = 204;
-  } else {
+      responseCode = 204;
+  }
+  else if (g) {
+      responseJSON.message += "Head piece not found. ";
+  }
+  else if (g) {
+      responseJSON.message += "Chest piece not found. ";
+  }
+  else if (g) {
+      responseJSON.message += "Gloves not found. ";
+  }
+  else if (g) {
+      responseJSON.message += "Waist piece not found. ";
+  }
+  else if (g) {
+      responseJSON.message += "Legs not found. ";
+  }
+  else if (g) {
+      responseJSON.message += "Weapon not found. ";
+  }
+  else if (g) {
+      responseJSON.message += "Charm not found.";
+  } 
+  else {
     // otherwise create an object with that name
     users[body.name] = {};
+  }
+
+  //check if any params were incorrect
+  if (responseJSON.message != ""){
+      responseJSON.id = 'invalidParams';
+      return respondJSON(request, response, 400, responseJSON);
   }
 
   // add or update fields for this user name
