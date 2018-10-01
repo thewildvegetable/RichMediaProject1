@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Our simple HTTP server</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+  <script src="/bundle.js"> </script>
+</head>
+<body>
+  <section id="top">
+    <h3>MHW tester</h3>
+    <form id="armorForm" action="/addUser" method="post">
+      <label for="name">Name: </label>
+      <input id="nameField" type="text" name="name" />
+      <label for="head">Head: </label>
+      <input id="headField" type="text" name="head"/>
+      <label for="chest">Chest: </label>
+      <input id="chestField" type="text" name="chest"/>
+        <label for="arms">Gloves: </label>
+      <input id="armsField" type="text" name="arms"/>
+        <label for="waist">Waist: </label>
+      <input id="waistField" type="text" name="waist"/>
+        <label for="legs">Legs: </label>
+      <input id="legField" type="text" name="legs"/>
+        <label for="weapon">Weapon: </label>
+      <input id="weaponField" type="text" name="weapon"/>
+        <label for="weapon">Weapon: </label>
+      <input id="weaponField" type="text" name="weapon"/>
+        <label for="charm">Charm: </label>
+      <input id="charmField" type="text" name="charm"/>
+      <input type="submit" value="Add User" />
+    </form>
+    <form id="userForm" action="/getUsers" method="get">
+      <input type="submit" value="Get User" />
+    </form>
+  </section>
+  <section id="content">
+  </section>
+</body>
+</html>
