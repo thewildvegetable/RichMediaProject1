@@ -16,10 +16,14 @@ const parseJSON = (xhr, content) => {
       
     //if users in response, add it
     if(obj.users) {
+        let keys = Object.keys(obj.users);
         const userList = document.createElement('p');
-        const users = JSON.stringify(obj.users);
-        userList.textContent = users;
-        content.appendChild(userList);
+        for (let i = 0; i < keys.length; i++){
+            let p1 = document.createElement('p');
+            let currentUser = obj.users[keys[i]];
+            p1.textContent = `name: ${currentUser.name}, head: ${currentUser.head.name}, chest: ${currentUser.chest.name}, gloves: ${currentUser.arms.name}, waist: ${currentUser.waist.name}, legs: ${currentUser.legs.name}, weapon: ${currentUser.weapon.name}, charm: ${currentUser.charm.name}`;
+            content.appendChild(p1);
+        }
     }
 };
 
@@ -56,7 +60,6 @@ const sendUsers = (e, userForm) => {
         
     //create a new Ajax request
     const xhr = new XMLHttpRequest();
-    console.log(userMethod);
     xhr.open(userMethod, userAction);
         
     //set our request type and response type

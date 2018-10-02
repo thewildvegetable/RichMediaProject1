@@ -1,3 +1,5 @@
+let armorForm; //form for armor
+let userForm; //form for getusers
 
 //function to parse our response
 const parseJSON = (xhr, content) => {
@@ -14,10 +16,14 @@ const parseJSON = (xhr, content) => {
 
   //if users in response, add it
   if (obj.users) {
+    let keys = Object.keys(obj.users);
     const userList = document.createElement('p');
-    const users = JSON.stringify(obj.users);
-    userList.textContent = users;
-    content.appendChild(userList);
+    for (let i = 0; i < keys.length; i++) {
+      let p1 = document.createElement('p');
+      let currentUser = obj.users[keys[i]];
+      p1.textContent = `name: ${currentUser.name}, head: ${currentUser.head.name}, chest: ${currentUser.chest.name}, gloves: ${currentUser.arms.name}, waist: ${currentUser.waist.name}, legs: ${currentUser.legs.name}, weapon: ${currentUser.weapon.name}, charm: ${currentUser.charm.name}`;
+      content.appendChild(p1);
+    }
   }
 };
 
@@ -52,15 +58,44 @@ const handleResponse = xhr => {
   parseJSON(xhr, content);
 };
 
-//function to send our post request
-const sendPost = (e, nameForm) => {
+const sendUsers = (e, userForm) => {
   //grab the forms action
-  const nameAction = nameForm.getAttribute('action');
-  const nameMethod = nameForm.getAttribute('method');
+  const userAction = userForm.getAttribute('action');
+  const userMethod = userForm.getAttribute('method');
+
+  //create a new Ajax request
+  const xhr = new XMLHttpRequest();
+  xhr.open(userMethod, userAction);
+
+  //set our request type and response type
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.setRequestHeader('Accept', 'application/json');
+
+  xhr.onload = () => handleResponse(xhr);
+
+  //send our request with the data
+  xhr.send();
+
+  //prevent the browser's default action
+  e.preventDefault();
+  return false;
+};
+
+//function to send our post request
+const sendPost = (e, armorForm) => {
+  //grab the forms action
+  const nameAction = armorForm.getAttribute('action');
+  const nameMethod = armorForm.getAttribute('method');
 
   //grab the form's name and age fields so we can check user input
-  const nameField = nameForm.querySelector('#nameField');
-  const ageField = nameForm.querySelector('#ageField');
+  const nameField = armorForm.querySelector('#nameField');
+  const headField = armorForm.querySelector('#headField');
+  const chestField = armorForm.querySelector('#chestField');
+  const armsField = armorForm.querySelector('#armsField');
+  const waistField = armorForm.querySelector('#waistField');
+  const legsField = armorForm.querySelector('#legsField');
+  const weaponField = armorForm.querySelector('#weaponField');
+  const charmField = armorForm.querySelector('#charmField');
 
   //create a new Ajax request (remember this is asynchronous)
   const xhr = new XMLHttpRequest();
@@ -76,7 +111,7 @@ const sendPost = (e, nameForm) => {
   xhr.onload = () => handleResponse(xhr);
 
   //build our x-www-form-urlencoded format
-  const formData = `name=${nameField.value}&age=${ageField.value}`;
+  const formData = `name=${nameField.value}&head=${headField.value}&chest=${chestField.value}&arms=${armsField.value}&waist=${waistField.value}&legs=${legsField.value}&weapon=${weaponField.value}&charm=${charmField.value}`;
 
   //send our request with the data
   xhr.send(formData);
@@ -88,13 +123,16 @@ const sendPost = (e, nameForm) => {
 
 const init = () => {
   //grab form
-  const nameForm = document.querySelector('#nameForm');
+  armorForm = document.querySelector('#armorForm');
+  userForm = document.querySelector('#userForm');
 
   //create handler
-  const addUser = e => sendPost(e, nameForm);
+  const addUser = e => sendPost(e, armorForm);
+  const getUsers = e => sendUsers(e, userForm);
 
   //attach submit event
-  nameForm.addEventListener('submit', addUser);
+  armorForm.addEventListener('submit', addUser);
+  userForm.addEventListener('submit', getUsers);
 };
 
 window.onload = init;

@@ -7,14 +7,33 @@ const bundle = fs.readFileSync(`${__dirname}/../hosted/bundle.js`);
 
 const users = {};
 
-let armors; // all the armors
-let weapons; // all the weapons
-let charms; // all the charms
+let armors = {}; // all the armors
+let apiArmors; // all the armors, unindexed
+let weapons = {}; // all the weapons
+let apiWeapons; // all the weapons, unindexed
+let charms = {}; // all the charms
+let apiCharms; // all the charms, unindexed
+
 
 const errorMessage = { message: '' };
 
+//makes the default user
+const setUpBaseUser = () => {
+    const user = {};
+    user.name = "Demo User";
+    user.head = armors["leather headgear"];
+    user.chest = armors["leather mail"];
+    user.arms = armors["leather gloves"];
+    user.waist = armors["leather belt"];
+    user.legs = armors["leather trousers"];
+    user.weapon = weapons["buster sword 1"];
+    user.charm = charms["poison charm"];
+    users[user.name] = user;
+};
+
 // function to handle the index page
 const getIndex = (request, response) => {
+  setUpBaseUser();
   response.writeHead(200, { 'Content-Type': 'text/html' });
   response.write(index);
   response.end();
@@ -64,52 +83,86 @@ const addUser = (request, response, body) => {
     message: 'Name, Head armor, Chest armor, Gloves, Waist armor, Leg armor, Weapon, and Charm are all required.',
   };
 
-  // check to make sure we have all the fields
-  if (!body.name || !body.head || || !body.chest || !body.arms || !body.waist || !body.legs || !body.weapon || !body.charm) {
+  // check to make sure we have all the fields (charms can be empty)
+  let fields = !body.name || !body.head || !body.chest || !body.arms;
+  fields = fields || !body.waist || !body.legs || !body.weapon;
+  if (fields) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
 
+  // check to make sure everything was nabbed from the mhw api
+  if (!armors || !weapons || !charms) {
+    response.writeHead(400, { 'Content-Type': 'application/json' });
+    response.write(JSON.stringify(errorMessage.message));
+    response.end();
+  }
+
   // default status code
   let responseCode = 201;
-    
-  //rest the error message
-  responseJSON.message = "";
+
+  // rest the error message
+  responseJSON.message = '';
 
   // if that user's name already exists in our object return an updated
   if (users[body.name]) {
-      responseCode = 204;
+    responseCode = 204;
   }
-  else if (g) {
-      responseJSON.message += "Head piece not found. ";
+  //if any part of the loadout is missing, response 400
+  if (!armors[body.head.toLowerCase()]) {
+    responseJSON.message += 'Head piece not found. ';
+    responseCode = 400;
   }
-  else if (g) {
-      responseJSON.message += "Chest piece not found. ";
+  if (!armors[body.chest.toLowerCase()]) {
+    responseJSON.message += 'Chest piece not found. ';
+    responseCode = 400;
   }
-  else if (g) {
-      responseJSON.message += "Gloves not found. ";
+  if (!armors[body.arms.toLowerCase()]) {
+    responseJSON.message += 'Gloves not found. ';
+    responseCode = 400;
   }
-  else if (g) {
-      responseJSON.message += "Waist piece not found. ";
+  if (!armors[body.waist.toLowerCase()]) {
+    responseJSON.message += 'Waist piece not found. ';
+    responseCode = 400;
   }
-  else if (g) {
-      responseJSON.message += "Legs not found. ";
+  if (!armors[body.legs.toLowerCase()]) {
+    responseJSON.message += 'Legs not found. ';
+    responseCode = 400;
   }
-  else if (g) {
-      responseJSON.message += "Weapon not found. ";
+  if (!weapons[body.weapon.toLowerCase()]) {
+    responseJSON.message += 'Weapon not found. ';
+    responseCode = 400;
   }
-  else if (g) {
-      responseJSON.message += "Charm not found.";
-  } 
-  else {
-    // otherwise create an object with that name
-    users[body.name] = {};
+    if (!body.charm){
+        //no charm data sent
+    }
+  else if (!charms[body.charm.toLowerCase()]) {
+      //charm data sent but charm was not found
+    responseJSON.message += 'Charm not found.';
+    responseCode = 400;
   }
 
-  //check if any params were incorrect
-  if (responseJSON.message != ""){
-      responseJSON.id = 'invalidParams';
-      return respondJSON(request, response, 400, responseJSON);
+  // check if any params were incorrect
+  if (responseCode === 400) {
+    responseJSON.id = 'invalidParams';
+    return respondJSON(request, response, 400, responseJSON);
+  }
+  else {
+    // otherwise create an object with that name
+    const user = {};
+    user.name = body.name;
+    user.head = armors[body.head.toLowerCase()];
+    user.chest = armors[body.chest.toLowerCase()];
+    user.arms = armors[body.arms.toLowerCase()];
+    user.waist = armors[body.waist.toLowerCase()];
+    user.legs = armors[body.legs.toLowerCase()];
+    user.weapon = weapons[body.weapon.toLowerCase()];
+    if (body.charm) {
+      user.charm = charms[body.charm.toLowerCase()];
+    } else {
+      user.charm = 'None';
+    }
+    users[body.name] = user;
   }
 
   // add or update fields for this user name
@@ -144,8 +197,14 @@ const getArmors = () => {
   requestAPI.get(requestUrl, (error, response, body) => {
     // if no error, store the armor json object in armors
     if (!error && response.statusCode === 200) {
-      console.dir(body);
-      armors = body;
+      apiArmors = JSON.parse(body);
+        
+        let count = Object.keys(apiArmors).length;
+
+      // loop through the armors from the api, and make armors into a map
+      for (let i = 0; i < count; i++) {
+        armors[apiArmors[i].name.toLowerCase()] = apiArmors[i];
+      }
     } else {
       // if an error, send that an error occurred to the client
       errorMessage.message += 'Armor could not be acquired, the MHW api may be down ';
@@ -161,7 +220,14 @@ const getWeapons = () => {
   requestAPI.get(requestUrl, (error, response, body) => {
     // if no error, store the armor json object in armors
     if (!error && response.statusCode === 200) {
-      weapons = body;
+      apiWeapons = JSON.parse(body);
+        
+        let count = Object.keys(apiWeapons).length;
+
+      // loop through the armors from the api, and make armors into a map
+      for (let i = 0; i < count; i++) {
+        weapons[apiWeapons[i].name.toLowerCase()] = apiWeapons[i];
+      }
     } else {
       // if an error, send that an error occurred to the client
       errorMessage.message += 'Weapons could not be acquired, the MHW api may be down ';
@@ -177,7 +243,14 @@ const getCharms = () => {
   requestAPI.get(requestUrl, (error, response, body) => {
     // if no error, store the armor json object in armors
     if (!error && response.statusCode === 200) {
-      charms = body;
+      apiCharms = JSON.parse(body);
+        
+        let count = Object.keys(apiCharms).length;
+
+      // loop through the armors from the api, and make armors into a map
+      for (let i = 0; i < count; i++) {
+        charms[apiCharms[i].name.toLowerCase()] = apiCharms[i];
+      }
     } else {
       // if an error, send that an error occurred to the client
       errorMessage.message += 'Charms could not be acquired, the MHW api may be down ';

@@ -55,8 +55,7 @@ const handleGet = (request, response, parsedUrl) => {
     responseHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getUsers') {
     responseHandler.getUsers(request, response);
-  }
-  else if (parsedUrl.pathname === '/bundle.js') {
+  } else if (parsedUrl.pathname === '/bundle.js') {
     responseHandler.getJS(request, response);
   } else if (parsedUrl.pathname === '/') {
     responseHandler.getIndex(request, response);
