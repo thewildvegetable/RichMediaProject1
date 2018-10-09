@@ -7,28 +7,28 @@ const bundle = fs.readFileSync(`${__dirname}/../hosted/bundle.js`);
 
 const users = {};
 
-let armors = {}; // all the armors
+const armors = {}; // all the armors
 let apiArmors; // all the armors, unindexed
-let weapons = {}; // all the weapons
+const weapons = {}; // all the weapons
 let apiWeapons; // all the weapons, unindexed
-let charms = {}; // all the charms
+const charms = {}; // all the charms
 let apiCharms; // all the charms, unindexed
 
 
 const errorMessage = { message: '' };
 
-//makes the default user
+// makes the default user
 const setUpBaseUser = () => {
-    const user = {};
-    user.name = "Demo User";
-    user.head = armors["leather headgear"];
-    user.chest = armors["leather mail"];
-    user.arms = armors["leather gloves"];
-    user.waist = armors["leather belt"];
-    user.legs = armors["leather trousers"];
-    user.weapon = weapons["buster sword 1"];
-    user.charm = charms["poison charm"];
-    users[user.name] = user;
+  const user = {};
+  user.name = 'Demo User';
+  user.head = armors['leather headgear'];
+  user.chest = armors['leather mail'];
+  user.arms = armors['leather gloves'];
+  user.waist = armors['leather belt'];
+  user.legs = armors['leather trousers'];
+  user.weapon = weapons['buster sword 1'];
+  user.charm = charms['poison charm'];
+  users[user.name] = user;
 };
 
 // function to handle the index page
@@ -108,7 +108,7 @@ const addUser = (request, response, body) => {
   if (users[body.name]) {
     responseCode = 204;
   }
-  //if any part of the loadout is missing, response 400
+  // if any part of the loadout is missing, response 400
   if (!armors[body.head.toLowerCase()]) {
     responseJSON.message += 'Head piece not found. ';
     responseCode = 400;
@@ -133,11 +133,10 @@ const addUser = (request, response, body) => {
     responseJSON.message += 'Weapon not found. ';
     responseCode = 400;
   }
-    if (!body.charm){
-        //no charm data sent
-    }
-  else if (!charms[body.charm.toLowerCase()]) {
-      //charm data sent but charm was not found
+  if (!body.charm) {
+    // no charm data sent
+  } else if (!charms[body.charm.toLowerCase()]) {
+    // charm data sent but charm was not found
     responseJSON.message += 'Charm not found.';
     responseCode = 400;
   }
@@ -147,23 +146,23 @@ const addUser = (request, response, body) => {
     responseJSON.id = 'invalidParams';
     return respondJSON(request, response, 400, responseJSON);
   }
-  else {
-    // otherwise create an object with that name
-    const user = {};
-    user.name = body.name;
-    user.head = armors[body.head.toLowerCase()];
-    user.chest = armors[body.chest.toLowerCase()];
-    user.arms = armors[body.arms.toLowerCase()];
-    user.waist = armors[body.waist.toLowerCase()];
-    user.legs = armors[body.legs.toLowerCase()];
-    user.weapon = weapons[body.weapon.toLowerCase()];
-    if (body.charm) {
-      user.charm = charms[body.charm.toLowerCase()];
-    } else {
-      user.charm = 'None';
-    }
-    users[body.name] = user;
+
+  // otherwise create an object with that name
+  const user = {};
+  user.name = body.name;
+  user.head = armors[body.head.toLowerCase()];
+  user.chest = armors[body.chest.toLowerCase()];
+  user.arms = armors[body.arms.toLowerCase()];
+  user.waist = armors[body.waist.toLowerCase()];
+  user.legs = armors[body.legs.toLowerCase()];
+  user.weapon = weapons[body.weapon.toLowerCase()];
+  if (body.charm) {
+    user.charm = charms[body.charm.toLowerCase()];
+  } else {
+    user.charm = 'None';
   }
+  users[body.name] = user;
+
 
   // add or update fields for this user name
   users[body.name].name = body.name;
@@ -198,8 +197,8 @@ const getArmors = () => {
     // if no error, store the armor json object in armors
     if (!error && response.statusCode === 200) {
       apiArmors = JSON.parse(body);
-        
-        let count = Object.keys(apiArmors).length;
+
+      const count = Object.keys(apiArmors).length;
 
       // loop through the armors from the api, and make armors into a map
       for (let i = 0; i < count; i++) {
@@ -221,8 +220,8 @@ const getWeapons = () => {
     // if no error, store the armor json object in armors
     if (!error && response.statusCode === 200) {
       apiWeapons = JSON.parse(body);
-        
-        let count = Object.keys(apiWeapons).length;
+
+      const count = Object.keys(apiWeapons).length;
 
       // loop through the armors from the api, and make armors into a map
       for (let i = 0; i < count; i++) {
@@ -244,8 +243,8 @@ const getCharms = () => {
     // if no error, store the armor json object in armors
     if (!error && response.statusCode === 200) {
       apiCharms = JSON.parse(body);
-        
-        let count = Object.keys(apiCharms).length;
+
+      const count = Object.keys(apiCharms).length;
 
       // loop through the armors from the api, and make armors into a map
       for (let i = 0; i < count; i++) {
