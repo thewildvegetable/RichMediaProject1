@@ -68,3 +68,13 @@ body {
     text-align: center;
     margin: 0 auto;
 }
+
+#formFloat{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.formInput{
+    flex: 1;
+    text-align: center;
+}

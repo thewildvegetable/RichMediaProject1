@@ -11,22 +11,41 @@
   <section id="top">
     <h3>MHW Loadout Maker</h3>
     <form id="armorForm" action="/addUser" method="post">
-      <label for="name">Name: </label>
-      <input id="nameField" type="text" name="name" />
-      <label for="head">Head: </label>
-      <input id="headField" type="text" name="head"/>
-      <label for="chest">Chest: </label>
-      <input id="chestField" type="text" name="chest"/>
-        <label for="arms">Gloves: </label>
-      <input id="armsField" type="text" name="arms"/>
-        <label for="waist">Waist: </label>
-      <input id="waistField" type="text" name="waist"/>
-        <label for="legs">Legs: </label>
-      <input id="legsField" type="text" name="legs"/>
-        <label for="weapon">Weapon: </label>
-      <input id="weaponField" type="text" name="weapon"/>
-        <label for="charm">Charm: </label>
-      <input id="charmField" type="text" name="charm"/>
+        <span id="formFloat">
+            <span class="formInput">
+              <label for="name"><p>Name: </p></label>
+              <input id="nameField" type="text" name="name" />
+            </span>
+            <span class="formInput">
+              <label for="head"><p>Head: </p></label>
+              <input id="headField" type="text" name="head"/>
+            </span>
+            <span class="formInput">
+              <label for="chest"><p>Chest: </p></label>
+              <input id="chestField" type="text" name="chest"/>
+            </span>
+            <span class="formInput">
+                <label for="arms"><p>Gloves: </p></label>
+              <input id="armsField" type="text" name="arms"/>
+            </span>
+            <span class="formInput">
+                <label for="waist"><p>Waist: </p></label>
+              <input id="waistField" type="text" name="waist"/>
+            </span>
+            <span class="formInput">
+                <label for="legs"><p>Legs: </p></label>
+              <input id="legsField" type="text" name="legs"/>
+            </span>
+            <span class="formInput">
+                <label for="weapon"><p>Weapon: </p></label>
+              <input id="weaponField" type="text" name="weapon"/>
+            </span>
+            <span class="formInput">
+                <label for="charm"><p>Charm: </p></label>
+              <input id="charmField" type="text" name="charm"/>
+            </span>
+        </span>
+        <br>
       <input type="submit" value="Add User" />
     </form>
   </section>
