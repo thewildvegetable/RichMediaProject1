@@ -29,6 +29,7 @@ const setUpBaseUser = () => {
   user.weapon = weapons['buster sword 1'];
   user.charm = charms['poison charm'];
   users[user.name] = user;
+    console.dir(armors);
 };
 
 // function to handle the index page

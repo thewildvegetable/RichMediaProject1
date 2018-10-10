@@ -78,12 +78,16 @@ const onRequest = (request, response) => {
   }
 };
 
-// start server
-http.createServer(onRequest).listen(port);
-
 // Get the information from the mhw api
+const startServer = () => {
+        // start server
+        http.createServer(onRequest).listen(port);
+
+        console.log(`Listening on 127.0.0.1: ${port}`);
+};
+
 responseHandler.getArmors();
 responseHandler.getWeapons();
 responseHandler.getCharms();
 
-console.log(`Listening on 127.0.0.1: ${port}`);
+setTimeout(startServer, 15000);

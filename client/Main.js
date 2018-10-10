@@ -34,8 +34,8 @@ const parseJSON = (xhr, content) => {
             span1.class = 'users';
             
             //onclick, display selected user's info
-            const selectedUserMethod = selectUser(currentUser.name);
-            span1.onclick = selectedUserMethod 
+            const selectedUserMethod = () => selectUser(currentUser.name);
+            span1.onclick = selectedUserMethod;
             //span1.textContent = `name: ${currentUser.name}, head: ${currentUser.head.name}, chest: ${currentUser.chest.name}, gloves: ${currentUser.arms.name}, waist: ${currentUser.waist.name}, legs: ${currentUser.legs.name}, weapon: ${currentUser.weapon.name}, charm: ${currentUser.charm.name}`;
             displayedUsersSection.appendChild(span1);
         }
@@ -46,24 +46,6 @@ const parseJSON = (xhr, content) => {
 const handleResponse = (xhr) => {
     const content = document.querySelector('#content');
       
-    //check the status code
-    switch(xhr.status) {
-        case 200: //success
-          content.innerHTML = `<b>Success</b>`;
-          break;
-        case 201: //created
-          content.innerHTML = '<b>Create</b>';
-          break;
-        case 204: //updated
-          content.innerHTML = '<b>Updated (No Content)</b>';
-          return;
-        case 400: //bad request
-          content.innerHTML = `<b>Bad Request</b>`;
-          break;
-        default: //any other status code
-          content.innerHTML = `Error code not implemented by client.`;
-          break;
-    }
     //parse response 
     parseJSON(xhr, content);
 };
