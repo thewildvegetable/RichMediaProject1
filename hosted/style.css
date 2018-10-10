@@ -51,8 +51,6 @@ body {
 #selectedUser{
     display: none;
     text-align: center;
-    border-top-style: solid;
-    border-top-width: 1px;
 }
 
 #selectedUserLoadout{
@@ -62,6 +60,8 @@ body {
 
 #name{
     text-align: center;
+    border-top-style: solid;
+    border-top-width: 1px;
 }
 
 #statsSpan{
