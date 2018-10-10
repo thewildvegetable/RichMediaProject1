@@ -159,7 +159,7 @@ const addUser = (request, response, body) => {
   if (body.charm) {
     user.charm = charms[body.charm.toLowerCase()];
   } else {
-    user.charm = 'None';
+    user.charm = { 'name': 'None' };
   }
   users[body.name] = user;
 

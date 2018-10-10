@@ -1,5 +1,7 @@
 let armorForm;      //form for armor
 let userForm;       //form for getusers
+let displayedUsersSection;  //section containing all of the user names
+let selectedUserSection;    //section containing the selected user
 
 //function to parse our response
 const parseJSON = (xhr, content) => {
@@ -16,13 +18,26 @@ const parseJSON = (xhr, content) => {
       
     //if users in response, add it
     if(obj.users) {
+        displayedUsersSection.innerHTML = '';
         let keys = Object.keys(obj.users);
-        const userList = document.createElement('p');
+        //loop through users array and add all the users to the user object
         for (let i = 0; i < keys.length; i++){
-            let p1 = document.createElement('p');
+            let span1 = document.createElement('span');
             let currentUser = obj.users[keys[i]];
-            p1.textContent = `name: ${currentUser.name}, head: ${currentUser.head.name}, chest: ${currentUser.chest.name}, gloves: ${currentUser.arms.name}, waist: ${currentUser.waist.name}, legs: ${currentUser.legs.name}, weapon: ${currentUser.weapon.name}, charm: ${currentUser.charm.name}`;
-            content.appendChild(p1);
+            
+            //store current user in users array
+            users[currentUser.name] = currentUser;
+            
+            //setup the span
+            span1.textContent = `name: ${currentUser.name}`;
+            span1.value = currentUser.name;
+            span1.class = 'users';
+            
+            //onclick, display selected user's info
+            const selectedUserMethod = selectUser(currentUser.name);
+            span1.onclick = selectedUserMethod 
+            //span1.textContent = `name: ${currentUser.name}, head: ${currentUser.head.name}, chest: ${currentUser.chest.name}, gloves: ${currentUser.arms.name}, waist: ${currentUser.waist.name}, legs: ${currentUser.legs.name}, weapon: ${currentUser.weapon.name}, charm: ${currentUser.charm.name}`;
+            displayedUsersSection.appendChild(span1);
         }
     }
 };
@@ -117,9 +132,11 @@ const sendPost = (e, armorForm) => {
 };
 
 const init = () => {
-    //grab form
+    //grab page contents
     armorForm = document.querySelector('#armorForm');
     userForm = document.querySelector('#userForm');
+    displayedUsersSection = document.querySelector('#users');
+    selectedUserSection = document.querySelector('#selectedUser');
      
     //create handler
     const addUser = (e) => sendPost(e, armorForm);

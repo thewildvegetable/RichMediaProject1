@@ -19,3 +19,15 @@ html, body {
   font-size: 2em;
   text-align: center;
 }
+
+.users{
+    
+}
+
+.armor{
+    
+}
+
+#selectedUser{
+    display:none;
+}
