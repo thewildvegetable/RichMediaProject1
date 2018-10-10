@@ -78,7 +78,7 @@ const onRequest = (request, response) => {
   }
 };
 
-// Get the information from the mhw api
+// Get the information from the mhw api and start server
 const startServer = () => {
   // start server
   http.createServer(onRequest).listen(port);

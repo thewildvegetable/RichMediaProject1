@@ -15,7 +15,7 @@ const charms = {}; // all the charms
 let apiCharms; // all the charms, unindexed
 
 
-const errorMessage = { message: '' };
+const errorMessage = { message: '' };   //used if any api data is not gotten
 
 // makes the default user
 const setUpBaseUser = () => {
@@ -48,7 +48,7 @@ const getCSS = (request, response) => {
 
 // function to handle the js
 const getJS = (request, response) => {
-  response.writeHead(200, { 'Content-Type': 'text/css' });
+  response.writeHead(200, { 'Content-Type': 'application/javascript' });
   response.write(bundle);
   response.end();
 };
@@ -80,7 +80,7 @@ const getUsers = (request, response) => {
 const addUser = (request, response, body) => {
   // default json message
   const responseJSON = {
-    message: 'Name, Head armor, Chest armor, Gloves, Waist armor, Leg armor, Weapon, and Charm are all required.',
+    message: 'Name, Head armor, Chest armor, Gloves, Waist armor, Leg armor, Weapon, and Charm are all required. ',
   };
 
   // check to make sure we have all the fields (charms can be empty)

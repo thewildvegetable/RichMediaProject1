@@ -9,16 +9,15 @@ const parseJSON = (xhr) => {
     const obj = JSON.parse(xhr.response);
     console.dir(obj);
     
-    displayedUsersSection.innerHTML = '';
     //if message in response, add it
     if(obj.message) {
-        const p = document.createElement('p');
-        p.textContent = `Message: ${obj.message}`;
-        displayedUsersSection.appendChild(p);
+        const p = document.querySelector('#responses');
+        p.textContent = `${obj.message}`;
     }
       
     //if users in response, add it
     if(obj.users) {
+        displayedUsersSection.innerHTML = '';
         let keys = Object.keys(obj.users);
         //loop through users array and add all the users to the user object
         for (let i = 0; i < keys.length; i++){
@@ -42,10 +41,11 @@ const parseJSON = (xhr) => {
 };
 
 //function to handle response
-const handleResponse = (xhr) => {
-      
-    //parse response 
-    parseJSON(xhr);
+const handleResponse = (xhr) => { 
+    //parse response
+    if (xhr.response){
+        parseJSON(xhr);
+    }
 };
 
 const sendUsers = (e, userForm) => {

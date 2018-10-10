@@ -101,5 +101,9 @@ const selectUser = (name) => {
     
     //weapon info
     weaponInfoPara.textContent = `Damage: ${selectedUser.weapon.attack.display}`;
+    //if there is element damage, add it
+    if (selectedUser.weapon.elements[0]){
+        weaponInfoPara.textContent += ` ${selectedUser.weapon.elements[0].type}: ${selectedUser.weapon.elements[0].damage}`;
+    }
     
 };
