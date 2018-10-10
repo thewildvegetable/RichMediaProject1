@@ -29,7 +29,6 @@ const setUpBaseUser = () => {
   user.weapon = weapons['buster sword 1'];
   user.charm = charms['poison charm'];
   users[user.name] = user;
-    console.dir(armors);
 };
 
 // function to handle the index page
@@ -160,7 +159,7 @@ const addUser = (request, response, body) => {
   if (body.charm) {
     user.charm = charms[body.charm.toLowerCase()];
   } else {
-    user.charm = { 'name': 'None' };
+    user.charm = { name: 'None' };
   }
   users[body.name] = user;
 

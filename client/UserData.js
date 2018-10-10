@@ -21,6 +21,7 @@ const selectUser = (name) => {
     const waistPara = document.querySelector('#waist');
     const legsPara = document.querySelector('#legs');
     const weaponPara = document.querySelector('#weapon');
+    const weaponInfoPara = document.querySelector('#weaponInfo');
     const charmPara = document.querySelector('#charm');
     const headImg = document.querySelector('#headImg');
     const chestImg = document.querySelector('#chestImg');
@@ -28,7 +29,6 @@ const selectUser = (name) => {
     const waistImg = document.querySelector('#waistImg');
     const legsImg = document.querySelector('#legsImg');
     const weaponImg = document.querySelector('#weaponImg');
-    const charmImg = document.querySelector('#charmImg');
     const stats = document.querySelector('#stats');
     
     //set the images
@@ -88,7 +88,6 @@ const selectUser = (name) => {
     
     //if charm exists, add it
     if (selectedUser.charm.name != 'None'){
-        charmImg.src = selectedUser.weapon.assets.image;
         let charmKeys = Object.keys(selectedUser.charm.ranks[0].skills)
         for (let i = 0; i < charmKeys.length; i++){
             skills += selectedUser.charm.ranks[0].skills[charmKeys[i]].skillName + ' ';
@@ -100,14 +99,6 @@ const selectUser = (name) => {
     stats.textContent += `Armor: ${defense} Fire Resistance: ${fire} Water Resistance: ${water} Ice Resistance: ${ice} Thunder Resistance: ${thunder} Dragon Resistance: ${dragon} `;
     
     //weapon info
-    weaponPara.textContent += ` Damage: ${selectedUser.weapon.attack.display}`;
-    //if elemental damage, add it
-    if (selectedUser.weapon.attack.elements[0]){
-        let weaponKeys = Object.keys(selectedUser.weapon.attack.elements)
-        for (let i = 0; i < weaponKeys.length; i++){
-            weaponPara.textContent += ` ${selectedUser.weapon.attack.elements[weaponKeys[i]].type}: ${selectedUser.weapon.attack.elements[weaponKeys[i]].damage}`;
-        }
-    }
-    
+    weaponInfoPara.textContent = `Damage: ${selectedUser.weapon.attack.display}`;
     
 };

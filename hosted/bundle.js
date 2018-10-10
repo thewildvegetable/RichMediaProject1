@@ -4,21 +4,21 @@ let displayedUsersSection; //section containing all of the user names
 let selectedUserSection; //section containing the selected user
 
 //function to parse our response
-const parseJSON = (xhr, content) => {
+const parseJSON = xhr => {
     //parse response
     const obj = JSON.parse(xhr.response);
     console.dir(obj);
 
+    displayedUsersSection.innerHTML = '';
     //if message in response, add it
     if (obj.message) {
         const p = document.createElement('p');
         p.textContent = `Message: ${obj.message}`;
-        content.appendChild(p);
+        displayedUsersSection.appendChild(p);
     }
 
     //if users in response, add it
     if (obj.users) {
-        displayedUsersSection.innerHTML = '';
         let keys = Object.keys(obj.users);
         //loop through users array and add all the users to the user object
         for (let i = 0; i < keys.length; i++) {
@@ -29,14 +29,13 @@ const parseJSON = (xhr, content) => {
             users[currentUser.name] = currentUser;
 
             //setup the span
-            span1.textContent = `name: ${currentUser.name}`;
+            span1.textContent = `Name: ${currentUser.name}`;
             span1.value = currentUser.name;
-            span1.class = 'users';
+            span1.className = 'userDisplay';
 
             //onclick, display selected user's info
             const selectedUserMethod = () => selectUser(currentUser.name);
             span1.onclick = selectedUserMethod;
-            //span1.textContent = `name: ${currentUser.name}, head: ${currentUser.head.name}, chest: ${currentUser.chest.name}, gloves: ${currentUser.arms.name}, waist: ${currentUser.waist.name}, legs: ${currentUser.legs.name}, weapon: ${currentUser.weapon.name}, charm: ${currentUser.charm.name}`;
             displayedUsersSection.appendChild(span1);
         }
     }
@@ -44,10 +43,9 @@ const parseJSON = (xhr, content) => {
 
 //function to handle response
 const handleResponse = xhr => {
-    const content = document.querySelector('#content');
 
     //parse response 
-    parseJSON(xhr, content);
+    parseJSON(xhr);
 };
 
 const sendUsers = (e, userForm) => {
@@ -153,6 +151,7 @@ const selectUser = name => {
     const waistPara = document.querySelector('#waist');
     const legsPara = document.querySelector('#legs');
     const weaponPara = document.querySelector('#weapon');
+    const weaponInfoPara = document.querySelector('#weaponInfo');
     const charmPara = document.querySelector('#charm');
     const headImg = document.querySelector('#headImg');
     const chestImg = document.querySelector('#chestImg');
@@ -160,7 +159,6 @@ const selectUser = name => {
     const waistImg = document.querySelector('#waistImg');
     const legsImg = document.querySelector('#legsImg');
     const weaponImg = document.querySelector('#weaponImg');
-    const charmImg = document.querySelector('#charmImg');
     const stats = document.querySelector('#stats');
 
     //set the images
@@ -220,7 +218,6 @@ const selectUser = name => {
 
     //if charm exists, add it
     if (selectedUser.charm.name != 'None') {
-        charmImg.src = selectedUser.weapon.assets.image;
         let charmKeys = Object.keys(selectedUser.charm.ranks[0].skills);
         for (let i = 0; i < charmKeys.length; i++) {
             skills += selectedUser.charm.ranks[0].skills[charmKeys[i]].skillName + ' ';
@@ -232,12 +229,5 @@ const selectUser = name => {
     stats.textContent += `Armor: ${defense} Fire Resistance: ${fire} Water Resistance: ${water} Ice Resistance: ${ice} Thunder Resistance: ${thunder} Dragon Resistance: ${dragon} `;
 
     //weapon info
-    weaponPara.textContent += ` Damage: ${selectedUser.weapon.attack.display}`;
-    //if elemental damage, add it
-    if (selectedUser.weapon.attack.elements[0]) {
-        let weaponKeys = Object.keys(selectedUser.weapon.attack.elements);
-        for (let i = 0; i < weaponKeys.length; i++) {
-            weaponPara.textContent += ` ${selectedUser.weapon.attack.elements[weaponKeys[i]].type}: ${selectedUser.weapon.attack.elements[weaponKeys[i]].damage}`;
-        }
-    }
+    weaponInfoPara.textContent = `Damage: ${selectedUser.weapon.attack.display}`;
 };

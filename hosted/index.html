@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Our simple HTTP server</title>
+  <title>Monster Hunter World Loadouts</title>
+  <link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script src="/bundle.js"> </script>
 </head>
 <body>
   <section id="top">
-    <h3>MHW tester</h3>
+    <h3>MHW Loadout Maker</h3>
     <form id="armorForm" action="/addUser" method="post">
       <label for="name">Name: </label>
       <input id="nameField" type="text" name="name" />
@@ -29,23 +29,25 @@
       <input id="charmField" type="text" name="charm"/>
       <input type="submit" value="Add User" />
     </form>
-    <form id="userForm" action="/getUsers" method="get">
-      <input type="submit" value="Get User" />
-    </form>
   </section>
   <section id="content">
       <section id="users">
       </section>
+      <form id="userForm" action="/getUsers" method="get">
+        <input type="submit" value="Get Loadouts" />
+      </form>
       <section id="selectedUser">
           <p id="name"></p>
-          <span  class="armor"><img id= "headImg" src="" height='500px' width='500px'><p id="head"></p></span>
-          <span class="armor"><img id= "chestImg" src="" height='500px' width='500px'><p id="chest"></p></span>
-          <span class="armor"><img id= "armsImg" src="" height='500px' width='500px'><p id="arms"></p></span>
-          <span class="armor"><img id= "waistImg" src="" height='500px' width='500px'><p id="waist"></p></span>
-          <span class="armor"><img id= "legsImg" src="" height='500px' width='500px'><p id="legs"></p></span>
-          <span class="armor"><img id= "weaponImg" src="" height='500px' width='500px'><p id="weapon"></p></span>
-          <span class="armor"><img id= "charmImg" src="" height='500px' width='500px'><p id="charm"></p></span>
-          <span id="stats"></span>
+          <section id="selectedUserLoadout">
+              <span  class="armor"><p id="head"></p><img id= "headImg" src="" height='128px' width='128px'></span>
+              <span class="armor"><p id="chest"></p><img id= "chestImg" src="" height='128px' width='128px'></span>
+              <span class="armor"><p id="arms"></p><img id= "armsImg" src="" height='128px' width='128px'></span>
+              <span class="armor"><p id="waist"></p><img id= "waistImg" src="" height='128px' width='128px'></span>
+              <span class="armor"><p id="legs"></p><img id= "legsImg" src="" height='128px' width='128px'></span>
+              <span class="armor"><p id="charm"></p><img id= "charmImg" src="https://vignette.wikia.nocookie.net/monsterhunter/images/d/d0/Charm_Icon_Red.png" height='128px' width='128px'></span>
+              <span class="armor"><p id="weapon"></p><p><img id= "weaponImg" src="" height='128px' width='128px'></p><p id="weaponInfo"></p></span>
+              <span id="statsSpan"><p id="stats"></p></span>
+          </section>
       </section>
   </section>
 </body>
