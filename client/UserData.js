@@ -30,6 +30,7 @@ const selectUser = (name) => {
     const legsImg = document.querySelector('#legsImg');
     const weaponImg = document.querySelector('#weaponImg');
     const stats = document.querySelector('#stats');
+    const skillsPara = document.querySelector('#skills');
     
     //set the images
     headImg.src = selectedUser.head.assets.imageMale;
@@ -95,8 +96,8 @@ const selectUser = (name) => {
     }
     
     //add to stats
-    stats.textContent = '';     //reset stats
-    stats.textContent += `Armor: ${defense} Fire Resistance: ${fire} Water Resistance: ${water} Ice Resistance: ${ice} Thunder Resistance: ${thunder} Dragon Resistance: ${dragon} `;
+    stats.textContent = `Armor: ${defense} Fire Resistance: ${fire} Water Resistance: ${water} Ice Resistance: ${ice} Thunder Resistance: ${thunder} Dragon Resistance: ${dragon} `;
+    skillsPara.textContent = `Skills: ${skills}`;
     
     //weapon info
     weaponInfoPara.textContent = `Damage: ${selectedUser.weapon.attack.display}`;

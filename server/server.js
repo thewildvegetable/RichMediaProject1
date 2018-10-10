@@ -90,4 +90,4 @@ responseHandler.getArmors();
 responseHandler.getWeapons();
 responseHandler.getCharms();
 
-setTimeout(startServer, 5000);
+setTimeout(startServer, 3000);
